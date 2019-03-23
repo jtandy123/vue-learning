@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Vue</title>
+  <style>
+    [v-cloak] {
+      display: none;
+    }
+
+    img {
+      width: 32px;
+      height: 32px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app" v-cloak>
+    <p>-------------------------------声明式渲染--------------------------------------</p>
+    {{message}}
+    {{new Date().getTime()}}
+
+    <span v-bind:title="spanTitle">我是一个span</span>
+    <img v-bind:src="imgSrc" v-bind:alt="imgAlt" />
+
+    <p>--------------------------------条件渲染---------------------------------------</p>
+    <div v-if="isIf === 1">
+      isIf为1的时候展示：{{isIf}}
+    </div>
+    <div v-else-if="isIf === 2">
+      isIf为2的时候展示：{{isIf}}
+    </div>
+    <div v-else>
+      isIf不为1或者2的时候展示：{{isIf}}
+    </div>
+
+    <div v-show="isShow">
+      当isShow为true的时候展示：{{isShow}}
+    </div>
+
+    <p>-----------------------------------列表渲染---------------------------------------</p>
+    <ul>
+      <li v-for="(item, index) in items" v-if="item.isShow" v-bind:key="index">
+        <p>{{index}}</p>
+        <p>{{item.name}}</p>
+        <p>￥{{item.price}}</p>
+      </li>
+    </ul>
+
+    <ul>
+      <li v-for="(value, key, index) in dataSource" v-bind:key="index">
+        <p>{{index}}.{{key}}.{{value}}</p>
+      </li>
+    </ul>
+
+    <p>-----------------------------------属性绑定---------------------------------------</p>
+    <p :title="testTitle1Key + ' - ' + testTitle2Key">testTitle</p>
+    <p :title="testTitle3Key - testTitle4Key">testTitle2</p>
+    <p :title="testObj">testObj</p>
+    <p :title="testArr">testArr</p>
+    <p :title="testMethod()">testMethod</p>
+
+    <p class="test" :class="{'red': isActive, 'big-font': isBig}">test1</p>
+    <p class="test" :class="testClassObject">test2</p>
+    <p class="test" :class="[classBlue, bigFont]">test3</p>
+    <p class="test" :class="[isBlue ? classBlue : classYellow]">test4</p>
+    <p class="test" :class="[{classBlue: isBlue}, testClassObject]">test5</p>
+
+    <p style="font-weight: bold" :style="isActive ? 'color: red' : 'color:blue'">test6</p>
+    <p style="font-weight: bold" :style="{color: styleRedColor, fontSize: styleFontSize + 'px', 'font-weight': styleFontLighter}">test7</p>
+    <p style="font-weight: bold" :style="testStyle">test8</p>
+
+    <p>-----------------------------------双向绑定---------------------------------------</p>
+    <input type="text" v-model="inputMessage" />
+    <p>{{inputMessage}}</p>
+    <br>
+
+    <textarea v-model="textareaMessage"></textarea>
+    <p>{{textareaMessage}}</p>
+    <br>
+
+    <!-- 当我们使用v-model绑定多选框的时候，如果我们的声明值（checkedMessage）为数组的话，那么v-model会绑定多选框的value值，
+      当多选框的checked为true的时候，则会把对应的value添加到数组中。如果我们的声明值为字符串的话，那么v-model会绑定多选框的checked值，
+      当多选框的checked为true的时候，则所有多选框的绑定值也变为true -->
+    <div>
+      <input type="checkbox" id="android" value="android" v-model="checkedMessage" />
+      <label for="android">android</label>
+      <input type="checkbox" id="ios" value="ios" v-model="checkedMessage" />
+      <label for="ios">ios</label>
+      <input type="checkbox" id="javascript" value="javascript" v-model="checkedMessage" />
+      <label for="javascript">javascript</label>
+      <br>
+      <p>checked message: {{checkedMessage}}</p>
+    </div>
+    <br>
+
+    <!-- 当我们使用v-model去绑定单选框的时候，v-model会自动绑定单选框的value值，当单选框的checked变为true的时候，对应的绑定值会变为该单选框的vlaue -->
+    <div>
+      <input type="radio" id="java" value="java" v-model="radioMessage" />
+      <label for="java">java</label>
+      <input type="radio" id="Vue" value="Vue" v-model="radioMessage" />
+      <label for="Vue">Vue</label>
+      <br>
+      <p>radio message: {{radioMessage}}</p>
+    </div>
+    <br>
+
+    <!-- 当我们使用v-model去绑定select的时候，如果select为多选的，那么我们的绑定值（selectedMessage），为数组类型。如果select为单选的，那么我们的绑定值（selectedMessage）为字符串类型 -->
+    <select v-model="selectedMessage" multiple style="width: 100px;">
+      <option>A</option>
+      <option>B</option>
+      <option>C</option>
+    </select>
+    <br>
+    <span>selected message: {{selectedMessage}}</span>
+
+    <p>-----------------------------------双向绑定修饰符---------------------------------------</p>
+    <input v-model.lazy="testlazy" />
+    <p>{{testlazy}}</p>
+    <br>
+
+    <input v-model.number="testnumber" type="number" />
+    <p>{{testnumber}}</p>
+    <br>
+
+    <input v-model.trim="testTrim" />
+    <p>{{testTrim}}</p>
+    <br>
+
+    <p>-----------------------------------事件处理--------------------------------------</p>
+    <div>
+      <button v-on:click="count += 1">count += 1</button>
+      <p>count: {{count}}</p>
+    </div>
+    <div>
+      <button @click="testOnClickMethods">testOnClickMethods</button>
+    </div>
+    <div>
+      <button @click="onSumClick(1, 2)">onSumClick</button>
+    </div>
+    <div>
+      <input type="text" @keyup="onChange" v-model="inputMsg" />
+    </div>
+
+    <p>-----------------------------------事件处理修饰符--------------------------------------</p>
+    <button @click.stop="onSumClick(1, 2)">onSumClick</button>
+
+    <a href="http://www.example.com" @click.prevent="onSumClick(1, 2)">http://www.example.com</a>
+
+    <div v-on:click.capture="doThis">...</div>
+
+    <div @click.self="testOnClickMethods">
+      testOnClickMethods
+      <button @click="onSumClick(1, 2)">onSumClick</button>
+    </div>
+
+    <button @click.once="onSumClick(1, 2)">onSumClick</button>
+
+    <div v-on:scroll.passive="onScroll">...</div>
+
+    <div @click="testOnClickMethods">
+      testOnClickMethods
+      <a href="http://www.example.com" @click.self.prevent="alert('http://www.example.com')">
+        http://www.example.com
+        <button @click="onSumClick(1, 2)">onSumClick</button>
+      </a>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script>
+    var testObj = {name: 'testObj'};
+    testObj.toString = () => 'name: ' + testObj.name;
+
+    var testArr = ['1', '2', '3'];
+    testArr.toString = () => '这是testArr的toString';
+
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        // 声明式渲染
+        message: 'Hello Vue!',
+        spanTitle: '我是span的title',
+        imgAlt: '我是一个img',
+        imgSrc: 'https://cn.vuejs.org/images/logo.png',
+        
+        // 条件渲染
+        isIf: 1,
+        isShow: false,
+
+        // 列表渲染
+        items: [{
+          name: 'android',
+          price: '12.00',
+          isShow: false
+        }, {
+          name: 'js',
+          price: '13.00',
+          isShow: true
+        }],
+        dataSource: {
+          name: 'Vue',
+          price: '12.99',
+          type: 'javascript'
+        },
+
+        // 属性绑定
+        testTitle1Key: 'testTitle1Value',
+        testTitle2Key: 'testTitle2Value',
+        testTitle3Key: 3,
+        testTitle4Key: 2,
+        testObj: testObj,
+        testArr: testArr,
+        testMethod() {
+          var result = 1 + 1;
+          return '1 + 1 = ' + result;
+        },
+
+        // class&style增强
+        isActive: true,
+        isBig: false,
+        testClassObject: {
+          blue: true,
+          'big-font': true
+        },
+        classBlue: 'blue',
+        classYellow: 'yellow',
+        isBlue: false,
+        bigFont: 'big-font',
+        styleRedColor: 'red',
+        styleFontSize: 18,
+        styleFontLighter: 'lighter',
+        testStyle: {
+          color: 'red',
+          fontSize: '18px',
+          'font-weight': 'lighter',
+          display: ['-webkit-box', '-ms-flexbox', 'flex']
+        },
+
+        // 双向绑定
+        inputMessage: '这是我们默认的input信息',
+        textareaMessage: '这是我们默认的textarea信息',
+        checkedMessage: [], // ''
+        radioMessage: '',
+        selectedMessage: [],
+
+        // 双向绑定修饰符
+        testlazy: '',
+        testnumber: '',
+        testTrim: '',
+
+        // 事件处理
+        count: 0,
+        inputMsg: ''
+      },
+      methods: {
+        testOnClickMethods(event) {
+          alert('Hello Vue');
+
+          if (event) {
+            alert(event.target.tagName);
+          }
+        },
+        onSumClick(s1, s2) {
+          alert(s1 + s2);
+        },
+        onChange() {
+          console.log(this.inputMsg);
+        }
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', (event) => console.log('DOMContentLoaded: ' + new Date().getTime()));
+  </script>
+</body>
+
+</html>
