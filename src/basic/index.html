@@ -181,6 +181,45 @@
 
     var vm = new Vue({
       el: '#app',
+      beforeCreate() {
+        console.log('before create');
+        this.message = 'Hello Vue, before create';
+      },
+      created() {
+        console.log(this);
+        console.log('created');
+        // created钩子函数中修改属性的值不会触发updated钩子函数的执行
+        this.message = 'Hello Vue, created';
+      },
+      beforeMount() {
+        console.log('before mount');
+        this.message = 'Hello Vue, before mount';
+      },
+      mounted() {
+        console.log('mounted');
+        // mounted钩子函数中修改属性的值会触发updated钩子函数的执行
+        this.message = 'Hello World, mounted';
+      },
+      beforeUpdate() {
+        console.log('before update');
+        // this.message = 'Hello Vue, before update';
+      },
+      updated() {
+        console.log('updated');
+        this.message = 'Hello Vue, updated';
+        // 死循环
+        // setTimeout(() => {
+        //   this.message = (new Date).getTime();
+        // }, 0);
+      },
+      beforeDestroy() {
+        console.log('before destroy');
+        this.message = 'Hello Vue, before destroy';
+      },
+      destroyed() {
+        console.log('destroyed');
+        this.message = 'Hello Vue, destroyed';
+      },
       data: {
         // 声明式渲染
         message: 'Hello Vue!',

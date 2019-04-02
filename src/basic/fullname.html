@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>computed属性</title>
+  <style>
+    [v-cloak] {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="app" v-cloak>
+    {{fullName}}
+
+    <p>{{nowDate}}</p>
+    <p>{{nowDate2()}}</p>
+    <p>{{nowDate3}}</p>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        firstName: 'Andy',
+        lastName: 'Jiang',
+        nowDate3: Date.now()
+      },
+      computed: {
+        // Vue以这种声明的方式（this.firstName、this.lastName）来确定了依赖的关系
+        // fullName() {
+        //   return this.firstName + ' ' + this.lastName
+        // }
+        fullName: {
+          get() {
+            console.log('get方法');
+            return this.firstName + ' ' + this.lastName;
+          },
+          set(newValue) {
+            console.log('set方法：' + newValue);
+            var names = newValue.split(' ');
+            this.firstName = names[0];
+            this.lastName = names[names.length - 1]
+          }
+        },
+        nowDate: {
+          cache: false,
+          get() {
+            return Date.now();
+          }
+        }
+      },
+      methods: {
+        nowDate2() {
+          return Date.now();
+        }
+      },
+      created() {
+        setInterval(() => {
+          this.nowDate3 = Date.now();
+          console.log('nowDate: ' + this.nowDate);
+          console.log('nowDate2: ' + this.nowDate2());
+        }, 1000)
+      },
+      updated() {
+        console.log('updated');
+      }
+    });
+  </script>
+</body>
+</html>

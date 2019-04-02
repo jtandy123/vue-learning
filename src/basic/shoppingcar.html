@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Shopping Car</title>
+  <style>
+    [v-cloak] {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app" v-cloak>
+    <p>{{testData}}</p>
+    <input type="button" value="test" @click="testMethod()" />
+    <ul>
+      <li v-for="(item, index) in books" :key="index">
+        <span>名称：{{item.name}}</span>
+        <span>价格：{{item.price.toFixed(2)}}</span>
+        <span>数量：<input type="button" value="+" @click="item.num += 1">{{item.num}}<input type="button" value="-"
+            @click="item.num -= 1"></span>
+        <br />
+      </li>
+    </ul>
+
+    <p>总价：{{totalPrice2}}</p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        testData: 0,
+        books: [{
+          name: 'Android',
+          price: 12.00,
+          num: 0
+        }, {
+          name: 'IOS',
+          price: 13.00,
+          num: 0
+        }, {
+          name: 'javascript',
+          price: 14.00,
+          num: 0
+        }],
+        totalPrice: 0.00
+      },
+      beforeUpdate() {
+        console.log('before update');
+      },
+      updated() {
+        console.log('updated');
+      },
+      methods: {
+        testMethod() {
+          console.log('testMethod');
+          this.testData += 1;
+        },
+        totalPrice() {
+          console.log('调用totalPrice()');
+          let result = 0;
+          this.books.forEach(book => {
+            result += book.price * book.num;
+          });
+          return result;
+        }
+      },
+      watch: {
+        books: {
+          // 监听到数据变化之后的回调方法
+          // 当监听的数据为对象或数组时，val和oldVal是相等的，因为这两个引用指向同一块内存空间
+          // watch属性
+          handler(val, oldVal) {
+            // console.log(val[0].num);
+            // console.log(oldVal[0].num);
+            // this.totalPrice = 0;
+
+            this.totalPrice = 'Computing...';
+
+            var $this = this;
+            setTimeout(() => {
+              this.totalPrice = 0;
+              val.forEach(item => {
+                $this.totalPrice += item.num * item.price;
+              });
+            }, 1000);
+          },
+          deep: true // 对象内部属性的监听
+        }
+      },
+      computed: {
+        totalPrice2: {
+          get() {
+            var totalPrice = 0;
+            this.books.forEach(item => {
+              totalPrice += item.num * item.price;
+            });
+            return totalPrice;
+          }
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>
