@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Vue API filter</title>
+</head>
+<body>
+  <div id="app">
+    <p>苏A·{{plateNumber | plateNumberFilter}}</p>
+    <p>苏A·{{plateNumber | toUpperCaseFilter | substringFilter(5)}}</p>
+    <input type='text' v-model="plateNumber" />
+  </div>
+  <script src="../common/vue.js"></script>
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        plateNumber: ''
+      },
+      filters: {
+        plateNumberFilter(value) {
+          console.log('plateNumberFilter');
+          return value.toUpperCase().substring(0, 5);
+        },
+        toUpperCaseFilter(value) {
+          console.log('toUpperCaseFilter');
+          return value.toUpperCase();
+        },
+        substringFilter(value, endNum) {
+          console.log('substringFilter');
+          return value.substring(0, endNum);
+        }
+      },
+      beforeUpdate() {
+        console.log('before update');
+      },
+      updated() {
+        console.log('updated');
+      },
+    });
+  </script>
+</body>
+</html>

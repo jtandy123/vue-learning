@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Vue API</title>
+</head>
+<body>
+  <div id="app">
+    <ul>
+      <li v-for="(item, index) in goods" v-bind::key="index">
+        <span>名称：{{item.name}}</span>
+        <span>价格：{{item.price.toFixed(2)}}</span>
+        <span>数量：
+          <input type="button" value="+" v-on:click="item.num += 1">
+          {{item.num}}
+          <input type="button" value="-" v-on:click="item.num -= 1">
+        </span>
+      </li>
+    </ul>
+  </div>
+
+  <script src="../common/vue.js"></script>
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        goods: []
+      },
+      created() {
+        let $this = this;
+        setTimeout(() => {
+          $this.goods = [{
+            name: 'android',
+            price: 12.99
+          }, {
+          name: 'IOS',
+          price: 13.99
+          }, {
+          name: 'javascript',
+          price: 14.99
+          }];
+
+          $this.goods.forEach(item => {
+            // item.num = 1;
+            // vm.$set(item, 'num', 1);
+            Vue.set(item, 'num', 1);
+          });
+        }, 3000);
+      }
+    });
+  </script>
+</body>
+</html>

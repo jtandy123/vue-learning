@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Vue API directive</title>
+</head>
+<body>
+  <div id="app">
+    <span v-demo="isShow">Hello v-demo</span>
+  </div>
+  <script src="../common/vue.js"></script>
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        isShow: true
+      },
+      directives: {
+        demo: {
+          bind(el, binding, vnode, oldVnode) {
+            el._originalDisplay = el.style.display;
+            if (!binding.value) {
+              el.style.display = 'none';
+            }
+          },
+          update(el, binding, vnode, oldVnode) {
+            if (!binding.value === !binding.oldValue) {
+              return;
+            }
+            el.style.display = binding.value ? el._originalDisplay : 'none';
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Vue API nextTick</title>
+</head>
+<body>
+  <div id="app">
+    <p id="msg">{{msg}}</p>
+  </div>
+
+  <script src="../common/vue.js"></script>
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        msg: ''
+      },
+      created() {
+        setTimeout(() => {
+          this.msg = '这是我们的描述信息，它很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长';
+
+          var msgDom = document.getElementById('msg');
+          Vue.nextTick(() => {
+            console.log('msg的高度为：' + msgDom.offsetHeight);
+          });
+        }, 1000);
+      },
+    })
+  </script>
+</body>
+</html>
