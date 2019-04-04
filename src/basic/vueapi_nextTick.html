@@ -23,11 +23,11 @@
           this.msg = '这是我们的描述信息，它很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长';
 
           var msgDom = document.getElementById('msg');
-          Vue.nextTick(() => {
+          Vue.nextTick().then(() => {
             console.log('msg的高度为：' + msgDom.offsetHeight);
           });
         }, 1000);
-      },
+      }
     })
   </script>
 </body>
