@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>prop demo</title>
+</head>
+<body>
+  <div id="app">
+    <main-view></main-view>
+  </div>
+
+  <script type="text/x-template" id="main-view">
+    <div>
+      <button @click="onChangeDescClick('Android')">Android</button>
+      <button @click="onChangeDescClick('IOS')">IOS</button>
+      <button @click="onChangeDescClick('Vue')">Vue</button>
+
+      <desc-view :pushSubDescObj='descObj'></desc-view>
+    </div>
+  </script>
+
+  <script src="../../common/vue.js"></script>
+  
+  <script>
+    Vue.component('desc-view', {
+      template: '<div><h1>{{pushSubDescObj.title}}</h1><p>{{pushSubDescObj.desc}}</p></div>',
+      props: {
+        pushSubDescObj: {
+          type: Object,
+          default() {
+            return {
+              title: '这是一个默认的标题',
+              desc: '这是一个默认的内容'
+            }
+          }
+        }
+      }
+    });
+
+    Vue.component('main-view', {
+      template: '#main-view',
+      data() {
+        return {
+          descObj: {
+            title: 'Android',
+            desc: '这是Android的描述信息'
+          }
+        };
+      },
+      methods: {
+        onChangeDescClick(type) {
+          this.descObj.title = type;
+          this.descObj.desc = '这是' + type + '的描述信息';
+        }
+      }
+    });
+
+    var vm = new Vue({
+      el: '#app'
+    });
+  </script>
+</body>
+</html>

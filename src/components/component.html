@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Component</title>
+</head>
+<body>
+  <div id="app">
+    <btn-success></btn-success>
+    <!-- 必须使用kebab-case的方式进行引用，下面的方式不生效 -->
+    <BtnSuccess></BtnSuccess>
+    
+    <btn-count-add></btn-count-add>
+
+    <btn-count-add2></btn-count-add2>
+  </div>
+
+  <script src="../common/vue.js"></script>
+  <script>
+    Vue.component('BtnSuccess', {
+      template: '<div><button class="btn-success" @click="onSuccessClick">成功</button></div>',
+      methods: {
+        onSuccessClick() {
+          alert('点击Success按钮');
+        }
+      }
+    });
+
+    // 组件的data选项必须是一个函数，返回一个独立可维护的对象
+    Vue.component('btn-count-add', {
+      template: '<div><span>当前count的值：{{count}}</span><button @click="onCountAddClick">count++</button>',
+      data() {
+        return {
+          count: 0
+        };
+      },
+      methods: {
+        onCountAddClick() {
+          this.count += 1;
+        }
+      }
+    });
+
+    // 组件局部注册
+    var btnCountAdd = {
+      template: '<div><span>当前count的值：{{count}}</span><button @click="onCountAddClick">count++</button>',
+      data() {
+        return {
+          count: 0
+        };
+      },
+      methods: {
+        onCountAddClick() {
+          this.count += 1;
+        }
+      }
+    };
+
+    var vm = new Vue({
+      el: '#app',
+      components: {
+        'BtnCountAdd2': btnCountAdd
+      }
+    });
+  </script>
+</body>
+</html>
