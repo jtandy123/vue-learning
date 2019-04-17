@@ -64,6 +64,9 @@
           console.log('nowDate2: ' + this.nowDate2());
         }, 1000)
       },
+      beforeUpdate() {
+        console.log('before update');
+      },
       updated() {
         console.log('updated');
       }

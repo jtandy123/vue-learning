@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Dynamic Component</title>
+</head>
+<body>
+  <div id="app">
+    <button v-on:click="onChangeComponentClick(1)">To ComponentA</button>
+    <button @click="onChangeComponentClick(2)">To ComponentB</button>
+    <button @click="onChangeComponentClick(3)">To ComponentC</button>
+    <component v-bind:is="componentId"></component>
+  </div>
+
+  <script type="text/x-template" id="component-a">
+    <div>component-a</div>
+  </script>
+
+  <script type="text/x-template" id="component-b">
+    <div>component-b</div>
+  </script>
+
+  <script type="text/x-template" id="component-c">
+    <div>component-c</div>
+  </script>
+
+  <script src="../common/vue-dev.js"></script>
+
+  <script>
+    var componentA = {
+      template: '#component-a'
+    };
+
+    var componentB = {
+    template: '#component-b'
+    };
+
+    var componentC = {
+    template: '#component-c'
+    };
+
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        componentId: componentA
+      },
+      methods: {
+        onChangeComponentClick(type) {
+          switch(type) {
+            case 1: 
+            this.componentId = componentA; 
+            break;
+            case 2 :
+            this.componentId = componentB;
+            break;
+            case 3:
+            this.componentId = componentC;
+            break;
+            default: 
+            this.componentId = componentA;
+            break;
+          }
+        }
+      },
+      beforeMount() {
+        console.log('before mount');
+      },
+      mounted() {
+        console.log('mounted');
+      },
+      beforeUpdate() {
+        console.log('before update');
+      },
+      updated() {
+        console.log('updated');
+      },
+    })
+  </script>
+</body>
+</html>

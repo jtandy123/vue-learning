@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>slot demo</title>
+</head>
+
+<body>
+  <div id="app">
+    <main-view>
+      <span>插槽演示</span>
+      <!-- <blog-view>
+        <h1 slot="title">{{blogData.title}}</h1>
+        <span slot="time">{{blogData.time}}</span>
+        <div>
+          <p>{{blogData.desc}}</p>
+        </div>
+      </blog-view> -->
+    </main-view>
+  </div>
+
+  <script src="../common/vue.js"></script>
+
+  <script type="text/x-template" id="main-view">
+    <div>
+      <slot></slot>
+      <blog-view>
+        <h1 slot="title">{{blogData.title}}</h1>
+        <span slot="time">{{blogData.time}}</span>
+        <div>
+          <p>{{blogData.desc}}</p>
+        </div>
+        <span>test</span>
+      </blog-view>
+    </div>
+  </script>
+
+  <script type="text/x-template" id="blog-view">
+    <div>
+      <slot name="title"></slot>
+      <slot name="time"></slot>
+      <slot>默认内容</slot>
+    </div>
+  </script>
+
+  <script>
+    Vue.component('main-view', {
+      template: '#main-view',
+      data() {
+        return {
+          blogData: {
+            title: '博客标题',
+            time: Date.now(),
+            desc: '博客内容'
+          }
+        };
+      }
+    });
+
+    Vue.component('blog-view', {
+      template: '#blog-view'
+    });
+
+    var vm = new Vue({
+      el: '#app',
+      // data: {
+      //   blogData: {
+      //   title: '博客标题',
+      //   time: Date.now(),
+      //   desc: '博客内容'
+      // }}
+    });
+  </script>
+</body>
+
+</html>

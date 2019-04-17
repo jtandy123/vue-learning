@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Event Transmit</title>
+</head>
+<body>
+  <div id="app">
+    <main-view></main-view>
+  </div>
+
+  <script src="../../common/vue.js"></script>
+
+  <script type="text/x-template" id="main-view">
+    <div>
+      <button @click="onChangeDescClick('Android')">Android</button>
+      <button @click="onChangeDescClick('IOS')">IOS</button>
+      <button @click="onChangeDescClick('Vue')">Vue</button>
+      <button @click="onDescFontSizeClick()">DescFontSize++</button>
+
+      <desc-view :pushSubDescObj='descObj'></desc-view>
+    </div>
+  </script>
+
+  <script type="text/x-template" id="desc-view">
+    <div>
+      <h1>{{pushSubDescObj.title}}</h1>
+      <p :style="{fontSize: fontSize + 'px'}">{{pushSubDescObj.desc}}</p>
+    </div>
+  </script>
+
+  <script>
+    Vue.component('desc-view', {
+      template: '#desc-view',
+      props: {
+        pushSubDescObj: {
+          type: Object,
+          default() {
+            return {
+              title: '这是一个默认的标题',
+              desc: '这是一个默认的内容'
+            };
+          }
+        }
+      },
+      data() {
+        return {
+          fontSize: 12
+        };
+      },
+      created() {
+        console.log('test: ' + (this === this.$root)); // false
+        this.$root.$on('descFontSizeAdd', (size) => {
+          this.fontSize += size;
+        });
+      }
+    });
+
+    Vue.component('main-view', {
+      template: '#main-view',
+      data() {
+        return {
+          descObj: {
+            title: 'Android',
+            desc: '这是Android的描述信息'
+          }
+        };
+      },
+      methods: {
+        onChangeDescClick(type) {
+          this.descObj.title = type;
+          this.descObj.desc = '这是' + type + '的描述信息';
+        },
+        onDescFontSizeClick() {
+          this.$root.$emit('descFontSizeAdd', 1);
+        }
+      },
+      created() {}
+    });
+
+    var vm = new Vue({
+      el: '#app',
+      created() {
+        console.log(vm); // undefined
+        console.log(this === this.$root); // true
+        console.log(vm === this); // false
+        console.log(vm === this.$root); // false
+        this.$on('descFontSizeAdd', (size) => {
+          console.log('size: ' + size);
+        })
+      },
+      mounted() {
+        console.log(vm);
+      },
+    });
+  </script>
+</body>
+</html>
