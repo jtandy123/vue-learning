@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Asynchronous Component</title>
+</head>
+<body>
+  <div id="app">
+    {{count}}
+    <async-example></async-example>
+  </div>
+
+  <script type="text/x-template" id="async-example-view">
+    <div>
+      我是一个通过异步加载进来的Component
+    </div>
+  </script>
+
+  <script src="../common/vue-dev.js"></script>
+
+  <script>
+    var resCom = {
+      template: '#async-example-view'
+    };
+
+    Vue.component('async-example', (resolve, reject) => {
+      setTimeout(() => {
+        resolve(resCom);
+        // reject('加载失败描述内容');
+      }, 10000);
+    });
+
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        count: 10
+      },
+      components: {
+        'async-example1': (resolve, reject) => {
+          setTimeout(() => {
+            resolve(resCom);
+          }, 1000);
+        }
+      },
+      created() {
+        var timer = setInterval(() => {
+          this.count -= 1;
+          if (this.count === 0) {
+            clearInterval(timer);
+          }
+        }, 1000);
+      }
+    });
+  </script>
+</body>
+</html>

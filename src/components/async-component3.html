@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Asynchronous Component</title>
+</head>
+
+<body>
+  <div id="app">
+    {{count}}
+    <async-example></async-example>
+  </div>
+
+  <script type="text/x-template" id="async-example-view">
+    <div>
+      我是一个通过异步加载进来的Component
+    </div>
+  </script>
+
+  <script src="../common/vue-dev.js"></script>
+
+  <script>
+    var resCom = {
+      template: '#async-example-view'
+    };
+
+    var promise = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(resCom);
+      }, 10000);
+    });
+
+    var LoadingComponent = {
+      template: '<div>异步组件加载...</div>'
+    };
+
+    var ErrorComponent = {
+      template: '<div>异步组件加载失败</div>'
+    };
+
+    const AsyncComponent = () => {
+      return {
+        // 需要加载的组件（应该是一个'Promise'对象）
+        component: promise,
+        // 异步组件加载时使用的组件
+        loading: LoadingComponent,
+        // 加载失败时使用的组件
+        error: ErrorComponent,
+        // 展示加载时组件的延时时间。默认值是200（毫秒）
+        delay: 2000,
+        // 如果提供了超时时间且组件加载也超时了，则使用加载失败时使用的组件。默认值是：'Infinity'
+        // 组件加载超时时间，超时表示加载失败，会展示ErrorComponent
+        timeout: 10000
+      };
+    };
+
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        count: 10
+      },
+      components: {
+        'async-example': AsyncComponent
+      },
+      created() {
+        var timer = setInterval(() => {
+          this.count -= 1;
+          if (this.count === 0) {
+            clearInterval(timer);
+          }
+        }, 1000);
+      }
+    });
+  </script>
+</body>
+
+</html>

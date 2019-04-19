@@ -11,7 +11,9 @@
     <button v-on:click="onChangeComponentClick(1)">To ComponentA</button>
     <button @click="onChangeComponentClick(2)">To ComponentB</button>
     <button @click="onChangeComponentClick(3)">To ComponentC</button>
-    <component v-bind:is="componentId"></component>
+    <keep-alive>
+      <component v-bind:is="componentId"></component>
+    </keep-alive>
   </div>
 
   <script type="text/x-template" id="component-a">
@@ -30,15 +32,24 @@
 
   <script>
     var componentA = {
-      template: '#component-a'
+      template: '#component-a',
+      created() {
+        console.log('component a created');
+      }
     };
 
     var componentB = {
-    template: '#component-b'
+    template: '#component-b',
+    created() {
+        console.log('component b created');
+      }
     };
 
     var componentC = {
-    template: '#component-c'
+    template: '#component-c',
+    created() {
+        console.log('component c created');
+      }
     };
 
     var vm = new Vue({
