@@ -68,6 +68,7 @@
     <p class="test" :class="testClassObject">test2</p>
     <p class="test" :class="[classBlue, bigFont]">test3</p>
     <p class="test" :class="[isBlue ? classBlue : classYellow]">test4</p>
+    <p class="test" :class="isBlue ? classBlue : classYellow">test4-1</p>
     <p class="test" :class="[{classBlue: isBlue}, testClassObject]">test5</p>
 
     <p style="font-weight: bold" :style="isActive ? 'color: red' : 'color:blue'">test6</p>
@@ -162,6 +163,16 @@
 
     <div v-on:scroll.passive="onScroll">...</div>
 
+    <!--
+      // 前面的条件满足了，才会去执行后面的
+      <div class="a">
+        <div class="b"></div>
+      </div>
+
+      a.@click.self.prevent="c"的意思是当你点击的元素是a的时候，才会prevent默认事件，而且执行c事件，如果你点击了b，由于事件传播，传播给了a，但是这个时候判断出这个点击事件不是a触发的，所以不会prevent，也不会触发c事件。
+
+      a.@click.prevent.self="c"总是先执行prevent，无论是内部元素还是本身元素触发，他都会prevent默认事件。只不过只有当你点击a元素的时候，才会触发c事件，点击内部元素不触发c事件。
+    -->
     <div @click="testOnClickMethods">
       testOnClickMethods
       <a href="http://www.example.com" @click.self.prevent="alert('http://www.example.com')">

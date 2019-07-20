@@ -11,7 +11,8 @@
     <main-view></main-view>
   </div>
 
-  <script src="../../common/vue.js"></script>
+  <!-- <script src="../../common/vue.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 
   <script type="text/x-template" id="main-view">
     <div>
@@ -74,6 +75,7 @@
           this.descObj.desc = '这是' + type + '的描述信息';
         },
         onDescFontSizeClick() {
+          console.log('$root: ', this.$root);
           this.$root.$emit('descFontSizeAdd', 1);
         }
       },
@@ -92,7 +94,8 @@
         })
       },
       mounted() {
-        console.log(vm);
+        console.log('vm: ', this);
+        console.log(this === this.$root);
       },
     });
   </script>

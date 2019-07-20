@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>prop demo</title>
+</head>
+
+<body>
+  <div id="app">
+    <main-view></main-view>
+  </div>
+
+  <script type="text/x-template" id="main-view">
+    <div>
+      <button @click="onChangeDescClick('Android')">Android</button>
+      <button @click="onChangeDescClick('IOS')">IOS</button>
+      <button @click="onChangeDescClick('Vue')">Vue</button>
+
+      <desc-view :pushSubDesc='desc'></desc-view>
+    </div>
+  </script>
+
+  <script src="../../common/vue.js"></script>
+
+  <script>
+    Vue.component('desc-view', {
+      template: '<div><h1>{{pushSubDesc}}</p></div>',
+      props: {
+        pushSubDesc: ''
+      },
+      data() {
+        return {
+          desc: this.pushSubDesc
+        };
+      },
+      beforeUpdate() {
+        console.log(this.pushSubDesc);
+        console.log(this.desc);
+        console.log('----------------------------')
+      },
+      updated() {
+        console.log(this.pushSubDesc);
+        console.log(this.desc);
+      },
+      watch: {
+        // 这里的function不能使用箭头函数，若使用箭头函数，函数体中的this将指向window，而不是组件实例
+        pushSubDesc: function (val) {
+          this.desc = 'test';
+        }
+      }
+    });
+
+    Vue.component('main-view', {
+      template: '#main-view',
+      data() {
+        return {
+          desc: ''
+        };
+      },
+      methods: {
+        onChangeDescClick(type) {
+          this.desc = type;
+        }
+      }
+    });
+
+    var vm = new Vue({
+      el: '#app'
+    });
+  </script>
+</body>
+
+</html>
