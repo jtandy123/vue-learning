@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Monitor data change</title>
+</head>
+
+<body>
+  <div>
+    <input type="text" id="input-msg">
+    <p id="output-msg"></p>
+  </div>
+
+  <script>
+    var inputMsg = document.getElementById('input-msg');
+    var outputMsg = document.getElementById('output-msg');
+
+    var obj = {
+      msg: 'hello'
+    };
+
+    var key = 'msg';
+
+    var val = obj[key];
+
+    Object.defineProperty(obj, key, {
+      enumerable: true,
+      configurable: true,
+      set(newValue) {
+        val = newValue;
+        // console.log('setter');
+
+        // inputMsg.value = obj[key];
+        outputMsg.innerText = obj[key];
+      },
+      get() {
+        // console.log('getter');
+        return val;
+      }
+    });
+
+    inputMsg.addEventListener('input', (event) => {
+      var newVal = event.target.value;
+      obj[key] = newVal;
+    })
+  </script>
+</body>
+
+</html>

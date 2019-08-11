@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Dynamic Component</title>
 </head>
+
 <body>
   <div id="app">
     <button v-on:click="onChangeComponentClick(1)">To ComponentA</button>
@@ -35,20 +37,56 @@
       template: '#component-a',
       created() {
         console.log('component a created');
+      },
+      activated() {
+        console.log('component a activated');
+      },
+      deactivated() {
+        console.log('component a deactivated');
+      },
+      beforeMount() {
+        console.log('component a beforeMount');
+      },
+      mounted() {
+        console.log('component a mounted');
+      },
+      beforeDestroy() {
+        console.log('component a before destroy')
+      },
+      destroyed() {
+        console.log('component a destroyed');
       }
     };
 
     var componentB = {
-    template: '#component-b',
-    created() {
+      template: '#component-b',
+      created() {
         console.log('component b created');
+      },
+      activated() {
+        console.log('component b activated');
+      },
+      deactivated() {
+        console.log('component b deactivated');
+      },
+      beforeMount() {
+        console.log('component b beforeMount');
+      },
+      mounted() {
+        console.log('component b mounted');
       }
     };
 
     var componentC = {
-    template: '#component-c',
-    created() {
+      template: '#component-c',
+      created() {
         console.log('component c created');
+      },
+      activated() {
+        console.log('component c activated');
+      },
+      deactivated() {
+        console.log('component c deactivated');
       }
     };
 
@@ -59,19 +97,19 @@
       },
       methods: {
         onChangeComponentClick(type) {
-          switch(type) {
-            case 1: 
-            this.componentId = componentA; 
-            break;
-            case 2 :
-            this.componentId = componentB;
-            break;
+          switch (type) {
+            case 1:
+              this.componentId = componentA;
+              break;
+            case 2:
+              this.componentId = componentB;
+              break;
             case 3:
-            this.componentId = componentC;
-            break;
-            default: 
-            this.componentId = componentA;
-            break;
+              this.componentId = componentC;
+              break;
+            default:
+              this.componentId = componentA;
+              break;
           }
         }
       },
@@ -90,4 +128,5 @@
     })
   </script>
 </body>
+
 </html>

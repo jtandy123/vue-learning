@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>btn-success component</title>
+</head>
+
+<body>
+  <div id="app">
+    <btn-success></btn-success>
+    <BTN-Success></BTN-Success>
+  </div>
+  <script src="../common/vue-dev.js"></script>
+  <script>
+    Vue.component('BtnSuccess', {
+      template: '<div><button class="btn-success" v-on:click="onSuccessClick">success button</button></div>',
+      methods: {
+        onSuccessClick() {
+          alert('click success button');
+        }
+      }
+    });
+
+    var vm = new Vue({
+      el: '#app'
+    });
+  </script>
+</body>
+
+</html>
