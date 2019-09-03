@@ -1,7 +1,7 @@
 /**
  * 指令集合
  * 所有支持的指令
- * v-model
+ * v-model v-on v-show
  */
 
 var directives = {
@@ -65,10 +65,22 @@ var directives = {
     this._link(vm, node, exp, 'text');
   },
 
+  /**
+   * isShow
+   * @param {*} vm 
+   * @param {*} node 
+   * @param {*} exp 
+   */
   _show(vm, node, exp) {
     this._link(vm, node, exp, 'show');
   },
 
+  /**
+   * v-on:click
+   * @param {*} vm 
+   * @param {*} node 
+   * @param {*} exp 
+   */
   _click(vm, node, exp) {
     var fn = vm.$options.methods && vm.$options.methods[exp.replace('()', '')];
 

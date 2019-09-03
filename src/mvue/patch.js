@@ -1,5 +1,10 @@
 /**
  * 根据具体的指令来修改渲染的内容
+ * 更改node value, 在编译之前，替换v-model {{*}}为真实数据
+ * @param {*} vm 
+ * @param {*} node 
+ * @param {*} exp 
+ * @param {*} dir 
  */
 function patch(vm, node, exp, dir) {
   switch (dir) {
