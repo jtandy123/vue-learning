@@ -4,6 +4,10 @@
 function MVue(options) {
   this.$options = options;
   this._data = options.data || {};
+
+  observer(this._data);
+
+  new Compile(this, this.$options.el);
 }
 
 MVue.prototype = {
