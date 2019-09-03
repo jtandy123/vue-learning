@@ -1,11 +1,16 @@
 /**
  * 观察者。订阅Dep，发布消息
  */
-function Watcher(vm, exp, patchFn) {
+function Watcher(vm, expOrFn, patchFn) {
   this.depIds = {};
   this.$patchFn = patchFn;
   this.$vm = vm;
-  this.getter = this.parsePath(exp);
+
+  if (typeof expOrFn === 'function') {
+    this.getter = expOrFn;
+  } else {
+    this.getter = this.parsePath(expOrFn);
+  }
   this.value = this.get();
 }
 
@@ -22,6 +27,7 @@ Watcher.prototype = {
     if (oldVal === newVal) {
       return;
     }
+    this.value = newVal;
     this.$patchFn.call(this.$vm, newVal);
   },
 
@@ -47,7 +53,7 @@ Watcher.prototype = {
   parsePath(path) {
     var segments = path.split('.');
 
-    return function(obj) {
+    return function (obj) {
       for (let i = 0; i < segments.length; i++) {
         if (!obj) return;
         obj = obj[segments[i]];

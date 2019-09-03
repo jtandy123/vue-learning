@@ -5,6 +5,16 @@
  */
 
 var directives = {
+  /**
+   * 分配指令
+   * @param {*} vm 
+   * @param {*} node 
+   * @param {*} exp 
+   * @param {*} dir 
+   */
+  dir(vm, node, exp, dir) {
+    this['_' + dir](vm, node, exp);
+  },
 
   // 通过_bind方法来初始化watcher
   _bind(vm, exp, patchFn) {
@@ -33,7 +43,7 @@ var directives = {
    * @param {*} node 
    * @param {*} exp 
    */
-  model(vm, node, exp) {
+  _model(vm, node, exp) {
     this._link(vm, node, exp, 'model');
 
     var val = vm._getVal(exp);
@@ -51,7 +61,19 @@ var directives = {
    * @param {*} node 
    * @param {*} exp 
    */
-  text(vm, node, exp) {
+  _text(vm, node, exp) {
     this._link(vm, node, exp, 'text');
+  },
+
+  _show(vm, node, exp) {
+    this._link(vm, node, exp, 'show');
+  },
+
+  _click(vm, node, exp) {
+    var fn = vm.$options.methods && vm.$options.methods[exp.replace('()', '')];
+
+    if (fn) {
+      node.addEventListener('click', fn.bind(vm), false);
+    }
   }
 };

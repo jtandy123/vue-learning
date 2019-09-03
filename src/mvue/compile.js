@@ -80,6 +80,7 @@ Compile.prototype = {
    */
   compileElmNode(node) {
     var attrs = [].slice.call(node.attributes);
+    var $this = this;
 
     attrs.forEach(attr => {
       if (!this.isDirective(attr.nodeName)) {
@@ -87,8 +88,14 @@ Compile.prototype = {
       }
 
       var exp = attr.value;
-      // 匹配v-model指令
-      directives.model(this.$vm, node, exp);
+      var dir = attr.nodeName.substring(2);
+
+      // 匹配指令
+      if ($this.isEvent(dir)) {
+        dir = dir.substring(3);
+      }
+      directives.dir($this.$vm, node, exp, dir);
+
       // 去掉自定义指令
       node.removeAttribute(attr.name);
     });
@@ -100,7 +107,7 @@ Compile.prototype = {
    * @param {*} exp 
    */
   compileTextNode(node, exp) {
-    directives.text(this.$vm, node, exp);
+    directives.dir(this.$vm, node, exp, 'text');
   },
 
   /**
@@ -109,6 +116,14 @@ Compile.prototype = {
    */
   isDirective(attrNodeName) {
     return attrNodeName.startsWith('v-');
+  },
+
+  /**
+   * 判断是否为事件指令
+   * @param {*} dir 
+   */
+  isEvent(dir) {
+    return dir.startsWith('on');
   },
 
   /**

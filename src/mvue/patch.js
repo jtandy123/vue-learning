@@ -11,5 +11,13 @@ function patch(vm, node, exp, dir) {
       return function (node, val) {
         node.textContent = typeof val === 'undefined' ? '' : val;
       }
+    case 'show':
+      return function (node, val) {
+        if (node._originalDisplay === undefined) {
+          node._originalDisplay = node.style.display;
+        }
+
+        node.style.display = val ? node._originalDisplay : 'none';
+      }
   }
 }
