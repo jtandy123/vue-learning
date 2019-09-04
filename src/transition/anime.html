@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Anime</title>
+</head>
+
+<body>
+  <div id="app">
+    <div>
+      <button @click="isShow = !isShow">toggin</button>
+    </div>
+    <transition v-on:enter="enter" v-on:leave="leave">
+      <p v-show="isShow">动画一</p>
+    </transition>
+  </div>
+
+  <script src="https://cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        isShow: true
+      },
+      methods: {
+        beforeEnter: function (el) {
+
+        },
+        enter: function (el, done) {
+          anime({
+            targets: el, // 执行动画元素
+            translateX: 0, // X轴移动0px
+            scale: 1, // 体积1倍 （复原）
+            rotate: '-1turn', // 旋转-1trun
+            opacity: 1, // 透明度变为1
+            // 动画完成的回调函数
+            complete: function (anim) {
+              // 执行done()方法，否则永远不会进入 afterEnter 回调
+              done();
+            }
+          });
+        },
+        leave: function (el, done) {
+          anime({
+            targets: el, // 执行动画元素
+            translateX: 250, // X轴移动250px
+            scale: 2, // 体积两倍
+            rotate: '1turn', // 旋转1trun
+            opacity: 0, // 透明度变为0
+            // 动画完成的回调函数
+            complete: function (anim) {
+              // 执行done()方法，否则永远不会进入 afterLeave 回调
+              done();
+            }
+          });
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>

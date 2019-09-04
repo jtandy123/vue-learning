@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vue with animate.css</title>
+  <link href="https://cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <div id="app">
+    <div>
+      <button @click="isShow = !isShow">toggle</button>
+    </div>
+    <transition enter-active-class="animated rollIn" leave-active-class="animated hinge">
+      <p v-show="isShow">动画一</p>
+    </transition>
+
+    <transition enter-active-class="animated bounceInDown" leave-active-class="animated bounceOutUp">
+      <p v-show="isShow">动画二</p>
+    </transition>
+
+    <transition enter-active-class="animated tada" leave-active-class="animated bounceOutRight">
+      <p v-show="isShow">动画三</p>
+    </transition>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        isShow: true
+      }
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>transition name</title>
+  <style>
+    #app {
+      text-align: center;
+    }
+
+    p {
+      width: 350px;
+      height: 150px;
+      line-height: 150px;
+      text-align: center;
+      background-color: aqua;
+      margin: 16px auto;
+    }
+
+    .anim-1-enter {
+      transform: translateX(100px);
+      opacity: 0;
+    }
+
+    .anim-1-enter-active {
+      transition: all 1s ease;
+    }
+
+    .anim-1-leave-to {
+      transform: translateX(-100px);
+      opacity: 0;
+    }
+
+    .anim-1-leave-active {
+      transition: all 1s ease;
+    }
+
+    .anim-2-enter-active {
+      animation: bounce-in 1s;
+    }
+
+    .anim-2-leave-active {
+      animation: bounce-in 1s reverse;
+    }
+
+    /* .anim-2-enter {
+      transform: translateX(100px);
+      opacity: 0;
+    }
+
+    .anim-2-enter-active {
+      transition: all 1s ease;
+    }
+
+    .anim-2-leave-to {
+      transform: translateX(-100px);
+      opacity: 0;
+    }
+
+    .anim-2-leave-active {
+      transition: all 1s ease;
+    } */
+
+    @keyframes bounce-in {
+      0% {
+        transform: scale(0);
+      }
+
+      50% {
+        transform: scale(1.5);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div>
+      <button @click="show = !show">toggle</button>
+    </div>
+    <transition name="anim-1">
+      <p v-if="show">v-if animate1</p>
+    </transition>
+    <transition name="anim-2">
+      <p v-show="show">v-show animate2</p>
+    </transition>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        show: true
+      }
+    });
+  </script>
+</body>
+
+</html>

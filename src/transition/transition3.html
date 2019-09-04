@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>transition with javascript hook</title>
+</head>
+
+<body>
+  <div id="app">
+    <div>
+      <button @click="onStartAnim">toggin</button>
+    </div>
+    <transition v-on:before-enter="beforeEnter" v-on:enter="enter" v-on:after-enter="afterEnter"
+      v-on:enter-cancelled="enterCancelled" v-on:before-leave="beforeLeave" v-on:leave="leave"
+      v-on:after-leave="afterLeave" v-on:leave-cancelled="leaveCancelled">
+      <p v-show="show">v-show 动画二</p>
+    </transition>
+
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        show: false
+      },
+      methods: {
+        onStartAnim: function () {
+          this.show = !this.show;
+        },
+        beforeEnter: function (el) {
+          // 准备进入（动画还未开始执行）
+          console.log('beforeEnter');
+
+          /**
+           * 推荐对于仅使用 JavaScript 过渡的元素添加 v-bind:css="false"，Vue 会跳过 CSS 的检测。这也可以避免过渡过程中 CSS 的影响。
+           * */
+          el.style.opacity = 0
+          el.style.transformOrigin = 'left'
+        },
+        enter: function (el, done) {
+          // 进入动画开始执行
+          console.log('enter');
+
+          /**
+           * 当只用 JavaScript 过渡的时候，在 enter 和 leave 中必须使用 done 进行回调。否则，它们将被同步调用，过渡会立即完成。
+           * */
+          Velocity(el, {
+            opacity: 1,
+            fontSize: '1.4em'
+          }, {
+            duration: 300
+          })
+          Velocity(el, {
+            fontSize: '1em'
+          }, {
+            complete: done
+          })
+        },
+        afterEnter: function (el) {
+          // 进入动画执行结束
+          console.log('afterEnter');
+        },
+        enterCancelled: function (el) {
+          // 进入动画被取消
+          console.log('enterCancelled');
+        },
+        beforeLeave: function (el) {
+          // 准备离开（动画还未开始执行）
+          console.log('beforeLeave');
+        },
+        leave: function (el, done) {
+          // 离开动画开始执行
+          console.log('leave');
+
+          /**
+           * 当只用 JavaScript 过渡的时候，在 enter 和 leave 中必须使用 done 进行回调。否则，它们将被同步调用，过渡会立即完成。
+           * */
+          Velocity(el, {
+            translateX: '15px',
+            rotateZ: '50deg'
+          }, {
+            duration: 600
+          })
+          Velocity(el, {
+            rotateZ: '100deg'
+          }, {
+            loop: 2
+          })
+          Velocity(el, {
+            rotateZ: '45deg',
+            translateY: '30px',
+            translateX: '30px',
+            opacity: 0
+          }, {
+            complete: done
+          })
+        },
+        afterLeave: function (el) {
+          // 离开动画执行结束
+          console.log('afterLeave');
+
+        },
+        leaveCancelled: function (el) {
+          // 离开动画被取消 （只在v-show下生效）
+          console.log('leaveCancelled');
+        },
+      }
+    });
+  </script>
+</body>
+
+</html>
