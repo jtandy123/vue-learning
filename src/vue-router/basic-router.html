@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+</head>
+<body>
+  <div id="app">
+    <p>
+      <router-link to="/one">one</router-link>
+      <router-link to="/two">two</router-link>
+    </p>
+    <!-- 路由出口，路由匹配到的组件将渲染在这里 -->
+    <router-view></router-view>
+  </div>
+
+  <script>
+    var one = {
+      template: '<div>One视图</div>'
+    };
+
+    var two = {
+      template: '<div>Two视图</div>'
+    };
+
+    var routes = [
+      {
+        path: '/one',
+        component: one
+      }, {
+        path: '/two',
+        component: two
+      }
+    ];
+
+    var router = new VueRouter({
+      routes: routes
+    });
+
+    var vm = new Vue({
+      router: router,
+      el: '#app'
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>nested router</title>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+</head>
+<body>
+  <div id="app">
+    <p>我是#app中的内容</p>
+
+    <router-view></router-view>
+  </div>
+
+  <script type="text/x-template" id="sub">
+    <div>
+      <p>我是#sub中的内容</p>
+      <router-link to="/sub1">sub1</router-link>
+      <router-link to="/sub2">sub2</router-link>
+      <router-view></router-view>
+    </div>
+  </script>
+
+  <script>
+    var sub = {
+      template: '#sub'
+    };
+
+    var sub1 = {
+      template: '<div>我是sub1</div>'
+    };
+
+    var sub2 = {
+      template: '<div>我是sub2</div>'
+    };
+
+    var routes = [
+      {
+        path: '/',
+        component: sub,
+        children: [
+          {
+            path: 'sub1',
+            component: sub1
+          },
+          {
+            path: 'sub2',
+            component: sub2
+          }
+        ]
+      }
+    ];
+
+    var router = new VueRouter({
+      routes
+    });
+
+    var vm = new Vue({
+      router
+    }).$mount('#app');
+  </script>
+</body>
+</html>

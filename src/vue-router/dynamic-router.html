@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>dynamic router</title>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+</head>
+<body>
+  <div id="app">
+    <p>
+      <router-link to="/one">one</router-link>
+      <router-link to="/user/123">user</router-link>
+      <a href="#" @click="toNameClick">通过Name跳转user</a>
+      <a href="#" @click="toPathClick">通过Path跳转user</a>
+    </p>
+    <router-view></router-view>
+  </div>
+  <script>
+    var one = {
+      template: '<div>One视图</div>'
+    };
+    var user = {
+      template: '<div>User视图 <p>$route.params: {{$route.params}}</p><p>$route.query: {{$route.query}}</p></div>'
+    };
+
+    var routes = [
+      {
+        path: '/one',
+        component: one
+      }, {
+        path: '/user/:id',
+        name: 'user',
+        component: user
+      }
+    ];
+
+    var router = new VueRouter({
+      routes: routes,
+      mode: 'hash' // 'history'
+    });
+
+    var vm = new Vue({
+      router: router,
+      el: '#app',
+      methods: {
+        toNameClick() {
+          console.log(this.$route);
+          console.log(this.$router);
+          this.$router.push({
+            name: 'user',
+            params: {
+              id: '456'
+            }
+          });
+        },
+        toPathClick() {
+          this.$router.push({
+            path: '/user/789',
+            query: {
+              id: '101112'
+            }
+          });
+        }
+      }
+    });
+  </script>
+</body>
+</html>
