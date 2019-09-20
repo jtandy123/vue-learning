@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>props</title>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+</head>
+<body>
+  <div id="app">
+    <com-1></com-1>
+  </div>
+
+  <script type="text/x-template" id="com-1">
+    <div>
+      <input type="button" v-on:click="addCount" value="count++">
+      <com-2 v-bind:count="count"></com-2>
+    </div>
+  </script>
+
+  <script type="text/x-template" id="com-2">
+    <div>
+      count: {{count}}
+    </div>
+  </script>
+
+  <script>
+    var com2 = {
+      template: '#com-2',
+      props: {
+        count: 0
+      }
+    };
+
+    var com1 = {
+      template: '#com-1',
+      data() {
+        return {
+          count: 0
+        };
+      },
+      methods: {
+        addCount() {
+          this.count++;
+        }
+      },
+      components: {
+        'com-2': com2
+      }
+    };
+    
+    var vm = new Vue({
+      el: '#app',
+      components: {
+        'com-1': com1
+      }
+    });
+  </script>
+</body>
+</html>

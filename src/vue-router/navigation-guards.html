@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>navigation guards</title>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+</head>
+<body>
+  <div id="app">
+    <p>
+      <router-link to="/one">one</router-link>
+      <router-link to="/two">two</router-link>
+    </p>
+    <router-view></router-view>
+  </div>
+
+  <script>
+    var one = {
+      template: '<div>One视图</div>',
+      // 进入路由时，在beforeEnter之后被调用，此时组件实例还没被创建
+      beforeRouteEnter (to, from, next) {
+        // 在渲染该组件的对应路由被 confirm 前调用
+        // 不！能！获取组件实例 `this`
+        // 因为当守卫执行前，组件实例还没被创建
+        console.log('beforeRouteEnter');
+        next();
+      },
+      // 路由被复用的时候调用
+      beforeRouteUpdate (to, from, next) {
+        // 在当前路由改变，但是该组件被复用时调用
+        // 举例来说，对于一个带有动态参数的路径 /foo/:id，在 /foo/1 和 /foo/2 之间跳转的时候，
+        // 由于会渲染同样的 Foo 组件，因此组件实例会被复用。而这个钩子就会在这个情况下被调用。
+        // 可以访问组件实例 `this`
+        console.log('beforeRouteUpdate');
+        next();
+      },
+      // 导航离开该组件的对应路由时调用
+      beforeRouteLeave (to, from, next) {
+        // 导航离开该组件的对应路由时调用
+        // 可以访问组件实例 `this`
+        console.log('beforeRouteLeave');
+        next();
+      }
+    };
+
+    var two = {
+      template: '<div>Two视图</div>'
+    };
+
+    var routes = [
+      {
+        path: '/one',
+        component: one,
+        // 进入路由时，在 beforeEach 之后被调用
+        beforeEnter (to, from, next) {
+          console.log('beforeEnter');
+          next();
+        }
+      }, {
+        path: '/two',
+        component: two
+      }
+    ];
+
+    var router = new VueRouter({routes});
+
+    // 进入路由时，最先被调用
+    router.beforeEach((to, from, next) => {
+      console.log('beforeEach');
+      next();
+    });
+
+    // 导航执行完成之后调用
+    router.afterEach((to, from) => {
+      console.log('afterEach');
+    });
+
+
+    var vm = new Vue({
+      router: router,
+      el: '#app'
+    });
+  </script>
+</body>
+</html>
