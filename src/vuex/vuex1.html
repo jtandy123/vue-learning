@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>basic vuex</title>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/vuex"></script>
+</head>
+<body>
+  <div id="app">
+    <com-1></com-1>
+    <com-2></com-2>
+  </div>
+
+  <script type="text/x-template" id="com-1">
+    <div>
+        <input type="button" @click="addCount" value="count++">
+    </div>
+  </script>
+
+  <script type="text/x-template" id="com-2">
+    <div>
+        count: {{this.$store.state.count}}
+    </div>
+  </script>
+
+  <script>
+    /**
+    * 声明一个Vuex实例，这个实例全局只有一个
+    * */
+    const store = new Vuex.Store({
+      state: {
+        count: 1
+      },
+      mutations: {
+        /**
+        * Vuex 中的 mutation 非常类似于事件：每个 mutation 都有一个字符串的 事件类型 (type)
+        * 和 一个 回调函数 (handler)。
+        * 这个回调函数就是我们实际进行状态更改的地方，并且它会接受 state 作为第一个参数：
+        * */
+        increment (state, payload) {
+          // 变更状态
+          // state.count += num;
+          state.count += payload.num;
+        }
+      },
+      actions: {
+        /**
+        * Action 函数接受一个与 store 实例具有相同方法和属性的 context 对象，
+        * 因此你可以调用 context.commit 提交一个 mutation，
+        * 或者通过 context.state 和 context.getters 来获取 state 和 getters。
+        * 但是 context 对象并！不！等！于！store 实例本身
+        * */
+        increment (context, payload) {
+          // 延迟1秒提交commit操作
+          setTimeout(() => {
+            /**
+            * 你不能直接调用一个 mutation handler。
+            * 这个选项更像是事件注册：“当触发一个类型为 increment 的 mutation 时，调用此函数。
+            * ”要唤醒一个 mutation handler，你需要以相应的 type 调用 store.commit 方法.
+            * 你可以向 store.commit 传入额外的参数，即 mutation 的 载荷（payload）。
+            * 或者我们也可以通过 对象风格的提交方式：
+            * store.commit({
+            *   type: 'increment',
+            *   num: 1
+            *  })
+            * 这种情况下我们将在 mutation 中接收到一个对象
+            * */
+            // context.commit('increment', num);
+            store.commit({
+              type: 'increment',
+              num: payload.num
+            });
+          }, 1000);
+        }
+      }
+    });
+
+    var com1 = {
+      template: '#com-1',
+      methods: {
+        addCount() {
+          /**
+          * 我们可以直接向 store.dispatch 传入额外的参数，即 action 的 载荷（payload）。
+          * 或者我们也可以通过 对象风格的提交方式：
+          * store.dispatch({
+          *   type: 'increment',
+          *   num: 1
+          * })
+          * 这种情况下我们将在 action 中接收到一个对象
+          * */
+          // this.$store.dispatch('increment', 1);
+          store.dispatch({
+            type: 'increment',
+            num:1
+          });
+        }
+      }
+    };
+
+    var com2 = {
+      template: '#com-2'
+    };
+
+    var vm = new Vue({
+      el: '#app',
+      components: {
+        'com-1': com1,
+        'com-2': com2
+      },
+       store
+    });
+  </script>
+</body>
+</html>

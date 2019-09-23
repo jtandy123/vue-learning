@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>advanced store</title>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+</head>
+<body>
+  <div id="app">
+    <com-1></com-1>
+    <com-2></com-2>
+  </div>
+
+  <script type="text/x-template" id="com-1">
+    <div>
+        <input type="button" v-on:click="addCount" value="count++" />
+      </div>
+    </script>
+
+  <script type="text/x-template" id="com-2">
+    <div>
+        count: {{sharedState.count}}
+      </div>
+    </script>
+
+  <script>
+    var store = {
+      debug: true,
+      state: {
+        count: 0
+      },
+      mutation: {
+        addCount(state) {
+          if (store.debug) {
+            console.log('调用addCount方法，count自加1: ', state.count + 1);
+          }
+          state.count++;
+        }
+      }
+    };
+
+    var com1 = {
+      template: '#com-1',
+      data() {
+        return {
+          privateState: {
+
+          },
+          sharedState: store.state
+        };
+      },
+      methods: {
+        addCount() {
+          store.mutation.addCount(store.state);
+        }
+      }
+    };
+
+    var com2 = {
+      template: '#com-2',
+      data() {
+        return {
+          privateState: {
+
+          },
+          sharedState: store.state
+        };
+      }
+    };
+
+    var vm = new Vue({
+      el: '#app',
+      components: {
+        'com-1': com1,
+        'com-2': com2
+      }
+    });
+  </script>
+</body>
+</html>

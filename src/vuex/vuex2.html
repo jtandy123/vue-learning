@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vuex module and getter</title>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/vuex"></script>
+</head>
+
+<body>
+  <div id="app">
+    <com-1></com-1>
+    <com-2></com-2>
+  </div>
+
+  <script type="text/x-template" id="com-1">
+    <div>
+        <input type="button" @click="addCount" value="count++">
+    </div>
+  </script>
+
+  <script type="text/x-template" id="com-2">
+    <div>
+        <!-- 我们将要通过模块的路径来调整 state的命名 -->
+        <p>count: {{this.$store.state.a.count}}</p>
+        <!-- Getter 会暴露为 store.getters 对象，你可以以属性的形式访问这些值： -->
+        <p>doubleCount: {{this.$store.getters.doubleCount}}</p>
+    </div>
+  </script>
+
+  <script>
+    const moduleA = {
+      state: {
+        count: 1
+      },
+      getters: {
+        doubleCount (state, getters) {
+          console.log('getters.count: ' + getters.count);
+          return state.count * 2;
+        },
+        count (state) {
+          console.log('count2: ', state.count2);
+          return state.count;
+        }
+      },
+      mutations: {
+        increment (state, num) {
+          state.count += num;
+        }
+      },
+      actions: {
+        increment (context, num) {
+          setTimeout(() => {
+            context.commit('increment', num);
+          }, 1000);
+        }
+      }
+    };
+
+    const moduleB = {
+      state: {
+        count2: 2
+      }
+    };
+
+    /**
+     * 声明一个Vuex实例，这个实例全局只有一个
+     * */
+    const store = new Vuex.Store({
+      modules: {
+        a: moduleA,
+        b: moduleB
+      }
+    });
+
+    var com1 = {
+      template: '#com-1',
+      methods: {
+        addCount() {
+          store.dispatch('increment', 1);
+        }
+      }
+    };
+
+    var com2 = {
+      template: '#com-2'
+    };
+
+    var vm = new Vue({
+      el: '#app',
+      components: {
+        'com-1': com1,
+        'com-2': com2
+      },
+      store
+    });
+  </script>
+</body>
+
+</html>
