@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>basic axios</title>
+</head>
+<body>
+  <div id="app">
+    <ul>
+      <li v-for="(friend, index) in friends" v-bind:key="index">{{friend.name}}</li>
+    </ul>
+  </div>
+  
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      data() {
+        return {
+          user: {},
+          friends: []
+        };
+      },
+      mounted() {
+        axios.post('/users', {id: '123'}).then((res) => {
+          this.user = res.data;
+        }).then((res) => {
+          console.log('res: ', res);
+          // return axios.post('/users/friends', this.user);
+          return axios({
+            method: 'post',
+            url: '/users/friends',
+            data: {}
+          });
+        }).then((res) => {
+          this.friends = res.data;
+        }).catch((err) => {
+          console.log(err);
+        });
+
+       /*
+       axios.all([
+         axios.post('/users', {id: '123'}),
+         axios.post('/users/friends'),
+       ]).then(axios.spread((usersData, friendsData) => {
+         this.user = usersData.data;
+         this.friends = friendsData.data
+       })).catch((err) => {
+         console.log(err);
+       });
+       */
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>basic axios</title>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <div id="app">
+    <pre>
+       <code>
+         {{JSON.stringify(data, null, 2)}}
+       </code>
+    </pre>
+  </div>
+
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      data() {
+        return {
+          data: ''
+        };
+      },
+      mounted() {
+        var p = axios.get('./data.json');
+        console.log(p);
+        p.then((res) => {
+          console.log(this);
+          console.log(res);
+          this.data = res;
+        }).catch((err) => {
+          console.log(err);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

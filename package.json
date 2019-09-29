@@ -1,3 +1,18 @@
 {
-  
+  "name": "vue-learning",
+  "scripts": {
+    "start": "node ./src/axios/server.js"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "body-parser": "^1.19.0",
+    "css-loader": "^3.2.0",
+    "express": "^4.17.1",
+    "html-webpack-plugin": "^3.2.0",
+    "multer": "^1.4.2",
+    "style-loader": "^1.0.0",
+    "webpack": "^4.41.0",
+    "webpack-cli": "^3.3.9"
+  }
 }
